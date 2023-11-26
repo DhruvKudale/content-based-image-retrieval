@@ -1,7 +1,7 @@
 import cv2
 import tqdm
 from proximity import compare_basic_histograms, compare_split_histograms, compare_ccvs
-from utility import load_images_from_folder, display_images, perform_eval
+from utility import load_images_from_folder, perform_eval
 
 def process_query_image(query_image_path, images, distribution='basic-histogram',
                         proximity='l2', channel_bins=8):
@@ -32,7 +32,6 @@ def process_query_image(query_image_path, images, distribution='basic-histogram'
     results.sort(key=lambda d: d[proximity], reverse=reverse)
     return results
 
-
 def run_query(dataset_path, query_image_path, distribution, proximity, channel_bins, k,
               display_results=True, experimentation=False):
     # Load images and labels
@@ -42,15 +41,6 @@ def run_query(dataset_path, query_image_path, distribution, proximity, channel_b
     # Filter top K results
     if k < len(results):
         results = results[:k]
-    # Display the results
-    if display_results:
-        print(f"Query image: {query_image_path}")
-        print("Top 5 similar images in the training set:")
-        for i in range(len(results)):
-            entry = results[i]
-            print(f"{distribution} using {proximity} : {entry[proximity]:.4f}")
-            # Display images
-            display_images(cv2.imread(query_image_path), entry['image-name'], entry[proximity])
 
     # Experimentation to report p, r, f only if the flag is True
     p = 0
@@ -61,12 +51,4 @@ def run_query(dataset_path, query_image_path, distribution, proximity, channel_b
     #         print(f'Precision : {p:.4f}')
     #         print(f'Recall    : {r:.4f}')
     #         print(f'F1 Score  : {f:.4f}')
-    p = 0
-    r = 0
-    f = 0
-    if experimentation and len(labels):
-        p, r, f = perform_eval(query_image_path, images, labels, results)
-    #         print(f'Precision : {p:.4f}')
-    #         print(f'Recall    : {r:.4f}')
-    #         print(f'F1 Score  : {f:.4f}')
-    return p, r, f
+    return results, p, r, f

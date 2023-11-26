@@ -1,10 +1,22 @@
 import tqdm
 import glob
-
+import cv2
+from matplotlib import pyplot as plt
 # Local imports
 from query_processing import run_query
 from config import (dataset_path, query_image_path, distribution, proximity,
                     channel_bins, k, display_results, experimentation)
+def display_images(query_image, matched_image_path, proximity_value):
+    # Display query image
+    plt.subplot(1, 2, 1)
+    plt.imshow(cv2.cvtColor(query_image, cv2.COLOR_BGR2RGB))
+    plt.title("Query Image")
+    # Display matched image
+    plt.subplot(1, 2, 2)
+    matched_image = cv2.imread(matched_image_path)
+    plt.imshow(cv2.cvtColor(matched_image, cv2.COLOR_BGR2RGB))
+    plt.title(f"Matched with value: {proximity_value:.3f}")
+    plt.show()
 
 def perfrom_cbir(dataset_path, query_images_path, distribution,
                  proximity, channel_bins, k, experimentation, display_results):
@@ -15,22 +27,31 @@ def perfrom_cbir(dataset_path, query_images_path, distribution,
     total_q = len(query_images)
     
     for query_image_path in tqdm.tqdm(query_images):
-        p, r, f = run_query(dataset_path, query_image_path, distribution, proximity, 
+        # Run the query and get results and p, r, f for top k predicitons
+        results, p, r, f = run_query(dataset_path, query_image_path, distribution, proximity,
                         channel_bins, k, display_results = display_results, experimentation = experimentation)
+        # Update values for experimentation of a set of query images
         total_p = total_p + p
         total_r = total_r + r
         total_f = total_f + f
-    
+        # Display the results
+        if display_results:
+            print(f"Query image: {query_image_path}")
+            print("Top Matched Images from the dataset:")
+            for i in range(len(results)):
+                entry = results[i]
+                print(f"{entry['image-name']}")
+                print(f"{distribution} using {proximity} : {entry[proximity]:.4f}\n")
+                # Display images
+                display_images(cv2.imread(query_image_path), entry['image-name'], entry[proximity])
     if experimentation:
         print(f'Precision : {total_p/total_q:.3f}')
         print(f'Recall    : {total_r/total_q:.3f}')
         print(f'F1 Score  : {total_f/total_q:.3f}')
 
 if __name__ == "__main__":
-
+    # Calling the core function. Arguments are picked from config file.
+    # See the config file for more details on the arguments
     perfrom_cbir(dataset_path = dataset_path, query_images_path = query_image_path,
                  distribution = distribution, proximity = proximity, channel_bins = channel_bins,
                  k = k, experimentation = experimentation, display_results = display_results)
-
-
-

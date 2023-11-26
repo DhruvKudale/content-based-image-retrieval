@@ -9,8 +9,6 @@ from config import (dataset_path, query_image_path, distribution, proximity,
 def perfrom_cbir(dataset_path, query_images_path, distribution,
                  proximity, channel_bins, k, experimentation, display_results):
     query_images = glob.glob(query_images_path + '*.jpg')
-    # For corr
-    query_images = query_images[:1]
     total_p = 0
     total_r = 0
     total_f = 0

@@ -134,6 +134,9 @@ def get_ccv_from_quantized_image(image, channel_bins, tau):
 def compare_ccvs(img1, img2, channel_bins, tau):
     ccv1 = get_ccv_from_quantized_image(img1, channel_bins, tau)
     ccv2 = get_ccv_from_quantized_image(img2, channel_bins, tau)
+    # Normalize CCVs
+    ccv1 = (ccv1 - np.min(ccv1)) / (np.max(ccv1) - np.min(ccv1))
+    ccv2 = (ccv2 - np.min(ccv2)) / (np.max(ccv2) - np.min(ccv2))
     l1 = np.sum(np.abs(ccv1 - ccv2))
     l2 = np.sqrt(np.sum((ccv1 - ccv2) ** 2))
     corr = np.corrcoef(ccv1, ccv2)[0, 1]

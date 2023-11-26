@@ -1,10 +1,10 @@
 # Set your input parameters
 
 # Dataset folder path. All jpg images under it recursively are included in the dataset
-dataset_path = "/home/dhruv/Projects/korel/dataset/training_set/"
+dataset_path = "../dataset/training_set/"
 
 # Query Image Folder path. All jpg images in this folder will be queried
-query_image_path = "/home/dhruv/Projects/korel/dataset/test_set/foods/"
+query_image_path = "../dataset/test_set_small/mountains_and_snow/"
 
 # To select which frequency distribution is calculated it can be 'basic-histogram', 'split-histogram' or 'ccv'
 # 'basic-histogram' is default value
@@ -19,7 +19,7 @@ proximity = 'corr'
 channel_bins = 16
 
 # For indicating top 'k' images will be retrieved
-k = 10
+k = 5
 
 # If true will calculate P, R and F from the Korel dataset.
 # For inference, it can be kept false (false by default)
@@ -27,4 +27,4 @@ experimentation = True
 
 # To display results on matplotlib, this is to be kept True.
 # This is True by default.
-display_results = False
+display_results = True

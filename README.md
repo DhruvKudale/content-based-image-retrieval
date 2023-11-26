@@ -3,7 +3,7 @@ Content Based Image Retrieval (CS 663 Project)
 
 ### Instructions to run
 ```
-python main.py
+python src/main.py
 ```
 This calls the perfrom_cbir() which has the following input parameters.
 #### Set your input parameters in src/config.py

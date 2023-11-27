@@ -100,8 +100,7 @@ def main():
 
         k = st.number_input("Enter the value of k", min_value=1, value=5)
         if st.button("Go"):
-            # Process the image with the selected parameters
-            # processed_image = process_image(query_image, distribution, proximity, k)
+          
             images, labels = perfrom_cbir(dataset_path = dataset_path, query_image_path = query_image_path,
                  distribution = distribution, proximity = proximity, channel_bins = channel_bins,
                  k = k, experimentation = experimentation, display_results = display_results)
@@ -109,10 +108,6 @@ def main():
             
             display_images_with_labels(images, labels)
 
-    
-
-
-    # Add an animated footer
     st.markdown("<p class='fadeIn' style='text-align: center; margin-top: 50px;'>Made by Ameya and Dhruv</p>", unsafe_allow_html=True)
 
 if __name__ == "__main__":

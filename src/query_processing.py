@@ -52,3 +52,21 @@ def run_query(dataset_path, query_image_path, distribution, proximity, channel_b
     #         print(f'Recall    : {r:.4f}')
     #         print(f'F1 Score  : {f:.4f}')
     return results, p, r, f
+
+def run_query_inference_only(dataset_path, query_image_path, distribution, proximity, channel_bins, k,
+              display_results=True, experimentation=False):
+    # Load images and labels
+    images, labels = load_images_from_folder(dataset_path)
+    # Process the query image
+    results = process_query_image(query_image_path, images, distribution, proximity, channel_bins)
+    # Filter top K results
+    if k < len(results):
+        results = results[:k]
+
+    # Return list of images and labels
+    images = []
+    labels = []
+    for entry in results:
+        images.append(entry['image-name'])
+        labels.append(entry['image-name'].split('/')[-2:][0])
+    return images, labels
